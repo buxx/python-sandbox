@@ -3,8 +3,8 @@ import multiprocessing
 import typing
 from multiprocessing import Event
 
-from benchmark.multiprocessing.lib.shared import SharedDataInterface
-from benchmark.multiprocessing.lib.work import work
+from sandbox.benchmark.multiprocessing.lib.shared import SharedDataInterface
+from sandbox.benchmark.multiprocessing.lib.work import work
 
 
 class ManagerSharedData(SharedDataInterface):

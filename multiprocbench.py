@@ -1,12 +1,13 @@
 # coding: utf-8
+import logging
 import multiprocessing
 import random
 import sys
 import enum
 
-from benchmark.multiprocessing.lib.manager import ManagerExecutor
+from sandbox.benchmark.multiprocessing.lib.manager import ManagerExecutor
 
-assert sys.version_info >= (3, 6), "Script wrote for Python 3.6+"
+assert sys.version_info >= (3, 5), "Script wrote for Python 3.5+"
 
 
 __DEFAULT__ = -1
@@ -30,8 +31,11 @@ def job(start: int, n: int) -> int:
     for i in range(n):
         v += random.choice(CHOICES)
 
-    # TODO: number grow up to faster: divide him to be inferior of 1000000
-    return v
+    # Reduce value
+    while v > 1000000:
+        v = v/2
+
+    return int(v)
 
 
 def main(mode: Mode, number: int, cycles: int) -> None:
@@ -72,8 +76,19 @@ if __name__ == '__main__':
         default=__DEFAULT__,
         help='Number of parrallel experience to make. Default value: number of cpu cores'
     )
+    parser.add_argument(
+        '--verbose',
+        '-v',
+        action='store_true',
+        help='Print logs',
+    )
 
     args = parser.parse_args()
+
+    if args.verbose:
+        logger = logging.getLogger()
+        logger.setLevel(logging.DEBUG)
+
     main(
         mode=args.mode,
         number=args.number if args.number != __DEFAULT__ else CPU_CORE_COUNT,
