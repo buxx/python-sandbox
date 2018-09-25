@@ -2,4 +2,11 @@
 
 
 class SharedDataInterface(object):
-    pass
+    def get(self, key):
+        raise NotImplementedError()
+
+    def set(self, key, value, ctype):
+        raise NotImplementedError()
+
+    def create(self, key, position, value):
+        raise NotImplementedError()

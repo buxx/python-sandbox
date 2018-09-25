@@ -5,7 +5,9 @@ import random
 import sys
 import enum
 
-from sandbox.benchmark.multiprocessing.lib.manager import ManagerExecutor
+from sandbox.benchmark.multiprocessing.manager import ManagerExecutor
+from sandbox.benchmark.multiprocessing.sharedmem import SharedmemExecutor
+from sandbox.lg import lg
 
 assert sys.version_info >= (3, 5), "Script wrote for Python 3.5+"
 
@@ -38,15 +40,16 @@ def job(start: int, n: int) -> int:
     return int(v)
 
 
-def main(mode: Mode, number: int, cycles: int) -> None:
+def main(mode: Mode, number: int, cycles: int, data_weight: int) -> None:
     if mode == Mode.manager:
         executor = ManagerExecutor(number=number, job=job)
     elif mode == Mode.sharedmem:
-        executor = SharedMemExecutor(number=number, job=job)
+        executor = SharedmemExecutor(number=number, job=job)
     else:
         raise NotImplementedError()
 
-    result = executor.compute(cycles=cycles)
+    r = executor.compute(cycles=cycles, data_weight=data_weight)
+    lg.info('Result (may be sliced): {}'.format(r))
 
 
 if __name__ == '__main__':
@@ -70,6 +73,11 @@ if __name__ == '__main__':
         help='Number of computing cycles'
     )
     parser.add_argument(
+        'weight',
+        type=int,
+        help='Size of data must be shared between processes'
+    )
+    parser.add_argument(
         '--number',
         '-n',
         type=int,
@@ -77,15 +85,23 @@ if __name__ == '__main__':
         help='Number of parrallel experience to make. Default value: number of cpu cores'
     )
     parser.add_argument(
-        '--verbose',
         '-v',
         action='store_true',
-        help='Print logs',
+        help='Print info logs',
+    )
+    parser.add_argument(
+        '-vv',
+        action='store_true',
+        help='Print debug logs',
     )
 
     args = parser.parse_args()
 
-    if args.verbose:
+    if args.v:
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+
+    if args.vv:
         logger = logging.getLogger()
         logger.setLevel(logging.DEBUG)
 
@@ -93,4 +109,5 @@ if __name__ == '__main__':
         mode=args.mode,
         number=args.number if args.number != __DEFAULT__ else CPU_CORE_COUNT,
         cycles=args.cycles,
+        data_weight=args.weight,
     )
