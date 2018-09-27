@@ -19,7 +19,7 @@ class Executor(object):
         self.number = number
         self.job = job
 
-    def compute(self, cycles: int, data_weight: int):
+    def compute(self, cycles: int, data_weight: int, print_cps: bool = False):
         processes = []  # type: typing.List[multiprocessing.Process]
         start_work_events = []  # type: typing.List[multiprocessing.Event]
         finished_work_events = []  # type: typing.List[multiprocessing.Event]
@@ -65,7 +65,8 @@ class Executor(object):
             lg.info('Cycle {} finished: {}'.format(cycle_id, time.time() - cycle_start_time))
 
         elapsed = time.time() - before_start_time
-        lg.info('All cycles finished: {} ({}cps)'.format(elapsed, cycles / elapsed))
+        cps = cycles / elapsed
+        lg.info('All cycles finished: {} ({}cps)'.format(elapsed, cps))
         exit_event.set()
         for start_work_event in start_work_events:
             start_work_event.set()
@@ -81,6 +82,9 @@ class Executor(object):
             else:
                 job_data_demo = list(job_data)
             return_value[job_id] = job_data_demo
+
+        if print_cps:
+            print(cps)
 
         return return_value
 
