@@ -9,6 +9,7 @@ import enum
 import matplotlib.pyplot as plt
 
 from sandbox.benchmark.multiprocessing.manager import ManagerExecutor
+from sandbox.benchmark.multiprocessing.mono import MonoExecutor
 from sandbox.benchmark.multiprocessing.sharedmem import SharedmemExecutor
 from sandbox.lg import lg
 
@@ -21,6 +22,7 @@ CPU_CORE_COUNT = multiprocessing.cpu_count()
 
 
 class Mode(enum.Enum):
+    mono = 'mono'
     manager = 'manager'
     sharedmem = 'sharedmem'
 
@@ -48,6 +50,8 @@ def main(mode: Mode, number: int, cycles: int, data_weight: int, print_cps: bool
         executor = ManagerExecutor(number=number, job=job)
     elif mode == Mode.sharedmem:
         executor = SharedmemExecutor(number=number, job=job)
+    elif mode == Mode.mono:
+        executor = MonoExecutor(number=number, job=job)
     else:
         raise NotImplementedError()
 

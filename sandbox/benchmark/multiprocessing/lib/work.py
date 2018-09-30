@@ -37,3 +37,16 @@ def work(
             job_id,
         ))
         finished_work_event.set()
+
+
+def work_mono(
+        job_id: int,
+        target: typing.Callable[[int, int], int],
+        shared_data: SharedDataInterface,
+) -> None:
+    values = shared_data.get(job_id)
+    lg.debug('job_{}: Start to work'.format(job_id))
+
+    for i, value in enumerate(values):
+        new_value = target(value, 100)  # TODO: in parameter: it is cpu working
+        shared_data.set(job_id, i, new_value)
