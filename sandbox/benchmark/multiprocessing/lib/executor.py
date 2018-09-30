@@ -1,6 +1,5 @@
 # coding: utf-8
 import multiprocessing
-import random
 import time
 import typing
 from multiprocessing import Event
@@ -33,7 +32,7 @@ class Executor(object):
             job_data = [0] * data_weight  # type: typing.List[int]
             shared_data.create(job_id, job_data, 'i')
             for i in range(data_weight):
-                shared_data.set(job_id, i, random.choice([0, 1]))
+                shared_data.set(job_id, i, 1)
 
         shared_data.commit()
         lg.info('Prepare init data finshed: {}'.format(time.time() - now))

@@ -1,5 +1,4 @@
 # coding: utf-8
-import random
 import typing
 
 import time
@@ -43,7 +42,7 @@ class MonoExecutor(Executor):
             job_data = [0] * data_weight  # type: typing.List[int]
             shared_data.create(job_id, job_data, 'i')
             for i in range(data_weight):
-                shared_data.set(job_id, i, random.choice([0, 1]))
+                shared_data.set(job_id, i, 1)
         lg.info('Prepare init data finshed: {}'.format(time.time() - now))
 
         before_start_time = time.time()

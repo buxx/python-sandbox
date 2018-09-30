@@ -1,7 +1,6 @@
 # coding: utf-8
 import logging
 import multiprocessing
-import random
 import subprocess
 import sys
 import enum
@@ -38,7 +37,7 @@ def job(start: int, n: int) -> int:
     """
     v = start
     for i in range(n):
-        v += random.choice(CHOICES)
+        v += 1
 
     # Reduce value
     while v > 1000000:
