@@ -11,5 +11,5 @@ class SharedDataInterface(object):
     def create(self, key, position, value):
         raise NotImplementedError()
 
-    def commit(self):
+    def commit(self, key=None):
         raise NotImplementedError()

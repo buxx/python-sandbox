@@ -14,10 +14,8 @@ def work(
         finished_work_event: Event,
         exit_event: Event,
 ) -> None:
-    values = shared_data.get(job_id)
-    data_weight = len(values)
-
     while True:
+        values = shared_data.get(job_id)
         lg.debug('job_{}: Wait start work event'.format(job_id))
         start_work_event.wait()
         start_work_event.clear()
@@ -34,6 +32,7 @@ def work(
             shared_data.set(job_id, i, new_value)
 
         shared_data.commit(job_id)
+        lg.debug('job_{} result: {}'.format(job_id, list(shared_data.get(job_id))))
         lg.debug('job_{}: Job finished, send finished work event'.format(
             job_id,
         ))

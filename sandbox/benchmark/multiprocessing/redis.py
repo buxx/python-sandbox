@@ -16,6 +16,7 @@ class RedisSharedData(SharedDataInterface):
         return json.loads(self.r.get(key).decode())
 
     def create(self, key, value, ctype):
+        self.r.set(key, [])
         self.to_commit[key] = value
 
     def set(self, key, position, value):
