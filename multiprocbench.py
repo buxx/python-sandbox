@@ -95,7 +95,8 @@ if __name__ == '__main__':
         choices=list(Mode),
         help='Choose mode of parralelism:'
              ' manager: use multiprocessing.Manager.'
-             ' sharedmem: use multiprocessing.Value|Array'
+             ' sharedmem: use multiprocessing.Value|Array.'
+             ' mono: no use multiprocessing'
     )
     parser.add_argument(
         'cycles',
