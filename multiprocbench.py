@@ -60,7 +60,19 @@ def main(mode: Mode, number: int, cycles: int, data_weight: int, print_cps: bool
         raise NotImplementedError()
 
     r = executor.compute(cycles=cycles, data_weight=data_weight, print_cps=print_cps)
-    lg.info('Result (may be sliced): {}'.format(r))
+
+    print_value = {}
+    for job_id, job_data in r.items():
+        if 10 <= len(job_data):
+            job_data_demo = list(job_data)[0:10]
+        else:
+            job_data_demo = list(job_data)
+        print_value[job_id] = job_data_demo
+
+    lg.info('Result (may be sliced): {}'.format(print_value))
+
+    for job_id, job_data in r.items():
+        lg.info('Final result {}: {}'.format(job_id, sum(job_data)))
 
 
 def generate_plot_viz(args):

@@ -78,12 +78,7 @@ class Executor(object):
 
         return_value = {}
         for job_id in range(self.number):
-            job_data = shared_data.get(job_id)
-            if 10 <= len(job_data):
-                job_data_demo = list(job_data)[0:10]
-            else:
-                job_data_demo = list(job_data)
-            return_value[job_id] = job_data_demo
+            return_value[job_id] = list(shared_data.get(job_id))
 
         if print_cps:
             print(cps)
