@@ -1,7 +1,7 @@
 
 For data viz:
 
-    pip install matplotlib
+    pip install matplotlib redis
     sudo apt-get install python3-tk
 
 then

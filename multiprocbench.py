@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sandbox.benchmark.multiprocessing.manager import ManagerExecutor
 from sandbox.benchmark.multiprocessing.mono import MonoExecutor
 from sandbox.benchmark.multiprocessing.sharedmem import SharedmemExecutor
+from sandbox.benchmark.multiprocessing.redis import RedisExecutor
 from sandbox.lg import lg
 
 assert sys.version_info >= (3, 5), "Script wrote for Python 3.5+"
@@ -25,6 +26,7 @@ class Mode(enum.Enum):
     mono = 'mono'
     manager = 'manager'
     sharedmem = 'sharedmem'
+    redis = 'redis'
 
 
 def job(start: int, n: int) -> int:
@@ -52,6 +54,8 @@ def main(mode: Mode, number: int, cycles: int, data_weight: int, print_cps: bool
         executor = SharedmemExecutor(number=number, job=job)
     elif mode == Mode.mono:
         executor = MonoExecutor(number=number, job=job)
+    elif mode == Mode.redis:
+        executor = RedisExecutor(number=number, job=job)
     else:
         raise NotImplementedError()
 
@@ -96,7 +100,8 @@ if __name__ == '__main__':
         help='Choose mode of parralelism:'
              ' manager: use multiprocessing.Manager.'
              ' sharedmem: use multiprocessing.Value|Array.'
-             ' mono: no use multiprocessing'
+             ' mono: no use multiprocessing.'
+             ' redis: use redis database.'
     )
     parser.add_argument(
         'cycles',

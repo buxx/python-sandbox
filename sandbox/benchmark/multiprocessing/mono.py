@@ -25,6 +25,9 @@ class MonoSharedData(SharedDataInterface):
         # TODO not working for something else than list ...
         self.data[key][position] = value
 
+    def commit(self, key=None):
+        pass
+
 
 class MonoExecutor(Executor):
     def _get_shared_data(self) -> SharedDataInterface:

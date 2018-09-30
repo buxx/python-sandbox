@@ -33,6 +33,7 @@ def work(
             new_value = target(value, 100)  # TODO: in parameter: it is cpu working
             shared_data.set(job_id, i, new_value)
 
+        shared_data.commit(job_id)
         lg.debug('job_{}: Job finished, send finished work event'.format(
             job_id,
         ))

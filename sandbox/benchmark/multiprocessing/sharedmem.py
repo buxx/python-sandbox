@@ -21,6 +21,9 @@ class SharedmemSharedData(SharedDataInterface):
         # TODO not working for something else than list ...
         self.data[key][position] = value
 
+    def commit(self, key=None):
+        pass
+
 
 class SharedmemExecutor(Executor):
     def __init__(

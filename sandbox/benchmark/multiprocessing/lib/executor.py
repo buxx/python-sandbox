@@ -34,6 +34,8 @@ class Executor(object):
             shared_data.create(job_id, job_data, 'i')
             for i in range(data_weight):
                 shared_data.set(job_id, i, random.choice([0, 1]))
+
+        shared_data.commit()
         lg.info('Prepare init data finshed: {}'.format(time.time() - now))
 
         for job_id in range(self.number):

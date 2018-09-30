@@ -22,6 +22,9 @@ class ManagerSharedData(SharedDataInterface):
         # TODO not working for something else than list ...
         self.data[key][position] = value
 
+    def commit(self, key=None):
+        pass
+
 
 class ManagerExecutor(Executor):
     def __init__(
